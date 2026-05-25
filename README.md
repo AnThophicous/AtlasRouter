@@ -477,10 +477,12 @@ Principais variaveis:
 
 ```env
 PORT=3000
-ATLAS_REQUEST_TIMEOUT_MS=60000
+ATLAS_REQUEST_TIMEOUT_MS=360000
 ATLAS_SUPERVISOR_ENABLED=true
 ATLAS_SUPERVISOR_HEALTH_INTERVAL_MS=15000
 ATLAS_SUPERVISOR_RESTART_BASE_DELAY_MS=2000
+ATLAS_CIRCUIT_FAILURES=3
+ATLAS_CIRCUIT_OPEN_MS=360000
 ```
 
 DeepSeek:
@@ -489,8 +491,8 @@ DeepSeek:
 DEEPS_ENABLED=true
 DEEPS_BASE_URL=http://127.0.0.1:3101
 DEEPS_MAX_CONCURRENT=2
-DEEPS_QUEUE_TIMEOUT_MS=45000
-DEEPS_TIMEOUT_MS=30000
+DEEPS_QUEUE_TIMEOUT_MS=360000
+DEEPS_TIMEOUT_MS=360000
 DEEPS_MAX_RETRIES=0
 ```
 
@@ -500,8 +502,8 @@ Qwen:
 QWEN_ENABLED=true
 QWEN_BASE_URL=http://127.0.0.1:3102
 QWEN_MAX_CONCURRENT=1
-QWEN_QUEUE_TIMEOUT_MS=45000
-QWEN_TIMEOUT_MS=30000
+QWEN_QUEUE_TIMEOUT_MS=360000
+QWEN_TIMEOUT_MS=360000
 QWEN_MAX_RETRIES=0
 ```
 
@@ -511,8 +513,8 @@ Kimi:
 KIMI_ENABLED=true
 KIMI_BASE_URL=http://127.0.0.1:3103
 KIMI_MAX_CONCURRENT=1
-KIMI_QUEUE_TIMEOUT_MS=45000
-KIMI_TIMEOUT_MS=30000
+KIMI_QUEUE_TIMEOUT_MS=360000
+KIMI_TIMEOUT_MS=360000
 KIMI_MAX_RETRIES=0
 ```
 
@@ -523,6 +525,8 @@ Se uma source nao existir localmente e voce nao configurar um `*_BASE_URL` manua
 Os campos de metadata como `max_output_tokens` em `src/config/models.ts` sao configuraveis pelo AtlasRouter. Voce pode aumentar, diminuir ou remover esses valores conforme o uso desejado.
 
 Esses valores nao forcam o provider a aceitar qualquer tamanho. Eles servem como informacao exposta pelo router. Se a IA ou a proxy tiver um limite interno menor, o provider ainda pode cortar a resposta, retornar erro ou fechar a conexao quando atingir o proprio limite.
+
+Para requests longas, especialmente modelos thinking, o AtlasRouter agora usa 6 minutos como timeout padrao de request, fila e cooldown do circuit breaker. Se o provider responder antes, o router retorna normalmente. Se o provider tiver um limite interno menor, esse limite do provider continua valendo.
 
 ## Persistencia
 
@@ -557,7 +561,7 @@ Variaveis:
 
 ```env
 ATLAS_CIRCUIT_FAILURES=3
-ATLAS_CIRCUIT_OPEN_MS=60000
+ATLAS_CIRCUIT_OPEN_MS=360000
 ```
 
 ## Comportamento quando faltam proxies

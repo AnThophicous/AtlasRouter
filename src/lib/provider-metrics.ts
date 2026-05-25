@@ -20,7 +20,7 @@ const metrics = new Map<ProviderId, ProviderRuntimeMetrics>();
 const stateDir = process.env.ATLAS_STATE_DIR ?? path.resolve(process.cwd(), '.atlasrouter');
 const metricsPath = path.join(stateDir, 'provider-metrics.json');
 const circuitFailureThreshold = Number(process.env.ATLAS_CIRCUIT_FAILURES ?? 3);
-const circuitOpenMs = Number(process.env.ATLAS_CIRCUIT_OPEN_MS ?? 60000);
+const circuitOpenMs = Number(process.env.ATLAS_CIRCUIT_OPEN_MS ?? 360000);
 
 function baseMetrics(providerId: ProviderId): ProviderRuntimeMetrics {
   const baseScoreMap: Record<ProviderId, number> = {

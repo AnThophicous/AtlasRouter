@@ -75,8 +75,8 @@ function provider(
     enabled: readBool(`${prefix}_ENABLED`, value.enabled ?? true),
     priority: readNumber(`${prefix}_PRIORITY`, value.priority ?? priority),
     maxConcurrent: readNumber(`${prefix}_MAX_CONCURRENT`, value.maxConcurrent ?? (id === 'deeps' ? 2 : 1)),
-    queueTimeoutMs: readNumber(`${prefix}_QUEUE_TIMEOUT_MS`, value.queueTimeoutMs ?? 45_000),
-    timeoutMs: readNumber(`${prefix}_TIMEOUT_MS`, value.timeoutMs ?? 30_000),
+    queueTimeoutMs: readNumber(`${prefix}_QUEUE_TIMEOUT_MS`, value.queueTimeoutMs ?? 360_000),
+    timeoutMs: readNumber(`${prefix}_TIMEOUT_MS`, value.timeoutMs ?? 360_000),
     healthTimeoutMs: readNumber(`${prefix}_HEALTH_TIMEOUT_MS`, value.healthTimeoutMs ?? 2_000),
     modelCacheTtlMs: readNumber(`${prefix}_MODEL_CACHE_TTL_MS`, value.modelCacheTtlMs ?? 60_000),
     maxRetries: readNumber(`${prefix}_MAX_RETRIES`, value.maxRetries ?? 0),
@@ -105,7 +105,7 @@ export function getProviderConfigs(): ProviderConfig[] {
     }),
     provider('mimo', 'Mimo AI', 3104, 40, {
       enabled: false,
-      timeoutMs: 60_000,
+      timeoutMs: 360_000,
       maxConcurrent: 1,
       capabilities: { tools: true, reasoning: true, vision: true, files: true }
     }),
@@ -127,7 +127,7 @@ export function getRouterPort(): number {
 }
 
 export function getRouterRequestTimeoutMs(): number {
-  return readNumber('ATLAS_REQUEST_TIMEOUT_MS', 60_000);
+  return readNumber('ATLAS_REQUEST_TIMEOUT_MS', 360_000);
 }
 
 export function getSupervisorEnabled(): boolean {
