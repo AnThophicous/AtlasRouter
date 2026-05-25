@@ -1,0 +1,43 @@
+{
+  "name": "atlasrouter",
+  "version": "1.0.0",
+  "description": "Unified OpenAI-compatible router for Pedro Farias proxy backends",
+  "private": true,
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "atlas": "./dist/cli.js"
+  },
+  "scripts": {
+    "atlas": "node dist/cli.js",
+    "atlas:dev": "tsx src/cli.ts",
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "test": "tsx --test src/**/*.test.ts"
+  },
+  "keywords": [
+    "openai",
+    "router",
+    "proxy",
+    "kimi",
+    "qwen",
+    "deepseek"
+  ],
+  "author": "Anthophicous",
+  "license": "ISC",
+  "dependencies": {
+    "@hono/node-server": "^2.0.4",
+    "dotenv": "^17.4.2",
+    "hono": "^4.12.23",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.1",
+    "tsx": "^4.22.3",
+    "typescript": "^6.0.3"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

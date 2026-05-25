@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.atlasrouter/
+.env
+sources/
+.codex/
+.agents/
