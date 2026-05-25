@@ -8,7 +8,10 @@ import { openAIError, messageFromUnknown } from './lib/errors.js';
 import { healthRouter } from './routes/health.js';
 import { modelsRouter } from './routes/models.js';
 import { chatRouter } from './routes/chat.js';
+import { geminiRouter } from './routes/gemini.js';
+import { messagesRouter } from './routes/messages.js';
 import { providersRouter } from './routes/providers.js';
+import { responsesRouter } from './routes/responses.js';
 import { getProviderConfigs, getRouterPort, getSupervisorEnabled } from './config/providers.js';
 import { startProxySupervisor, stopProxySupervisor } from './services/proxy-supervisor.js';
 import type { AppEnv } from './types/app.js';
@@ -58,6 +61,9 @@ app.route('/', healthRouter);
 app.route('/', modelsRouter);
 app.route('/', providersRouter);
 app.route('/', chatRouter);
+app.route('/', responsesRouter);
+app.route('/', messagesRouter);
+app.route('/', geminiRouter);
 
 app.notFound((c) => c.json({
   error: {

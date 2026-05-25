@@ -4,6 +4,8 @@ AtlasRouter e um router OpenAI-compatible para usar varias proxies de IA locais 
 
 Ele foi feito para juntar proxies como DeepSeek, Qwen e Kimi em um endpoint unico, com fallback, health check, supervisor de processos, metricas, alertas, streaming e modelos virtuais como `atlas/auto` e `atlas/compeat`.
 
+Tambem expõe compatibilidade com `Responses API` em `/v1/responses`, adaptando requests modernas para o mesmo motor de roteamento.
+
 O AtlasRouter nao inclui o codigo das proxies. Ele baixa as proxies sob demanda com Git pela CLI `atlas`, deixando o repositorio principal limpo e publicavel.
 
 ## Estado atual
@@ -380,6 +382,60 @@ curl -N http://localhost:3000/v1/chat/completions \
   }'
 ```
 
+### Responses API
+
+```bash
+curl http://localhost:3000/v1/responses \
+  -H "content-type: application/json" \
+  -d '{
+    "model": "atlas/auto",
+    "input": "Explique em uma frase o que e fallback de modelos."
+  }'
+```
+
+### Responses API com streaming
+
+```bash
+curl -N http://localhost:3000/v1/responses \
+  -H "content-type: application/json" \
+  -d '{
+    "model": "atlas/compeat",
+    "stream": true,
+    "input": "Responda em 3 bullets sobre roteamento de modelos."
+  }'
+```
+
+### Claude Messages API
+
+```bash
+curl http://localhost:3000/v1/messages \
+  -H "content-type: application/json" \
+  -d '{
+    "model": "atlas/auto",
+    "max_tokens": 120,
+    "messages": [
+      { "role": "user", "content": "Explique em uma frase o que e um router de modelos." }
+    ]
+  }'
+```
+
+### Gemini generateContent
+
+```bash
+curl http://localhost:3000/gemini/v1beta/models/atlas-auto:generateContent \
+  -H "content-type: application/json" \
+  -d '{
+    "contents": [
+      {
+        "role": "user",
+        "parts": [
+          { "text": "Responda apenas ok" }
+        ]
+      }
+    ]
+  }'
+```
+
 ## Usando em clientes OpenAI-compatible
 
 Configuracao padrao:
@@ -415,6 +471,15 @@ GET  /v1/router/metrics
 GET  /v1/router/compeat
 GET  /v1/router/supervisor
 POST /v1/chat/completions
+POST /v1/responses
+GET  /v1/responses/:response_id
+GET  /v1/responses/:response_id/input_items
+DELETE /v1/responses/:response_id
+POST /v1/messages
+GET  /gemini/v1beta/models
+GET  /gemini/v1beta/models/:model
+POST /gemini/v1beta/models/:model:generateContent
+POST /gemini/v1beta/models/:model:streamGenerateContent
 ```
 
 ### /v1/router/alerts
